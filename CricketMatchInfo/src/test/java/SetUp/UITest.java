@@ -8,13 +8,13 @@ import java.util.*;
 public class UITest extends UITestSetUp {
 
 
-    public HashMap<String,Integer> getPerPlayerInningScore(String teamName, int inningNo){
+    public HashMap<String,Integer> getPerPlayerInningScore(String teamName, String inningNo){
 
         HashMap<String, Integer> mapPlayerScore = new HashMap<String, Integer>();
-        List<WebElement> inning = driver.findElements(By.xpath("//ul//*[contains(text(),'"+teamName+" 1st Innings')]/ancestor::ul"));
+        WebElement inning = driver.findElement(By.xpath("//*[contains(text(),'"+teamName+inningNo+"Innings')]/ancestor::ul"));
         //"//*[contains(@class,'scorecard')]/ul"
 
-        List<WebElement> playerList = inning.get(inningNo).findElements(By.xpath(".//div[contains(@class,'row')]/div[contains(@class,'batsmen')]"));
+        List<WebElement> playerList = inning.findElements(By.xpath(".//div[contains(@class,'row')]/div[contains(@class,'batsmen')]"));
 
 
             for(WebElement player:playerList){
@@ -29,7 +29,7 @@ public class UITest extends UITestSetUp {
 
     }
 
-    public int getTotalInningScore(String teamName, int inningNo){
+    public int getTotalInningScore(String teamName, String inningNo){
 
         int teamScore = 0;
         int score = 0;
@@ -49,13 +49,14 @@ public class UITest extends UITestSetUp {
         return teamScore;
     }
 
-    public int getInningsExtras(int inningNo){
+    public int getInningsExtras(String teamName, String inningNo){
 
         int extras=0;
 
         HashMap<String, Integer> mapPlayerScore = new HashMap<String, Integer>();
-        List<WebElement> inning = driver.findElements(By.xpath("//*[contains(@class,'scorecard')]/ul"));
-        WebElement extra = inning.get(inningNo).findElement(By.xpath(".//div[contains(@class,'row')]/div[contains(@class,'extras')]/div[2]"));
+        //List<WebElement> inning = driver.findElements(By.xpath("//*[contains(@class,'scorecard')]/ul"));
+        //WebElement extra = inning.get(inningNo).findElement(By.xpath(".//div[contains(@class,'row')]/div[contains(@class,'extras')]/div[2]"));
+        WebElement extra = driver.findElement(By.xpath("//*[contains(text(),'"+teamName+inningNo+"Innings')]/ancestor::ul//div[contains(@class,'row')]/div[contains(@class,'extras')]/div[2]"));
         extras = Integer.parseInt(extra.getText().toString().split("\\(")[0].trim());
         return extras;
     }
